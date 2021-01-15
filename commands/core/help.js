@@ -10,7 +10,10 @@ function help(channel, client){
         .addFields(
             {name: 'pp!gif', value: "sends back a random gif"},
             {name: 'pp!gif *tag*', value: "sends back a random gif based on your tag"},
-            {name: 'pp!getvid *queue*', value: "find an YT video by your queue"}
+            {name: 'pp!getvid *key_words*', value: "find an YT video by your key words"},
+            {name: 'pp!play *video_name / url*', value: "play song"},
+            {name: 'pp!skip', value: "skip song"},
+            {name: 'pp!stop', value: "stop playing"},
             // {name: 'pp!command3', value: "what id does"},
         )
         .setTimestamp(new Date())
