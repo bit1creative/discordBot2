@@ -1,4 +1,4 @@
-const { adminManagementChannelId, adminRoleId } = require("../../config.json");
+const { adminManagementChannelId, adminRoleId, guestRoleId } = require("../../config.json");
 
 function setRole(message) {
 
@@ -15,13 +15,28 @@ function setRole(message) {
 
     }
 
-    let user = message.mentions?.members?.first()?.user;
+    let user = message.guild.members.cache.find( 
+        user => user.id === message.mentions?.members?.first()?.user.id
+        );
+
     let role = message.mentions?.roles?.first()?.id;
 
+    if ( !user || !role ) {
 
-    console.log(user);
+        message.channel.send("Check for user and role to be mentioned.");
 
+    }
 
+    if ( user.roles.cache.find( role => role.id === guestRoleId) ) {
+
+        user.roles.remove(guestRoleId);
+
+    }
+
+    user.roles.add(role);
+    message.channel.send(`User <@${user.id}> has been updated with a role <@&${role}>`);
+
+    return;
 
 }
 
