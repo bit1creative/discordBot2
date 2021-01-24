@@ -3,6 +3,7 @@ const { giphy } = require("./commands/giphy");
 const { get_video } = require("./commands/music/youtube");
 const { newMember } = require("./commands/userManagement/newMember");
 const { asyncExecute, skip, stop } = require("./commands/music/player");
+const { setRole } = require("./commands/userManagement/setRole");
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -54,6 +55,9 @@ client.on('message', async message => {
             break;
         case "stop":
             stop(message);
+            break;
+        case "setrole":
+            setRole(message);
             break;
         default:
             message.channel.send('Wrong command, type pp!help to see available commands.')
