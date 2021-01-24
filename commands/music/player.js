@@ -16,7 +16,7 @@ const queueContruct = {
 
 };
 
-async function execute(message){
+async function asyncExecute(message){
 
     const voiceChannel = message.member.voice.channel;
 
@@ -32,7 +32,7 @@ async function execute(message){
         return message.channel.send("Acess denied. Got no permissions!");        
     }
 
-    let song = await songInfo(message);
+    let song = await asyncSongInfo(message);
 
     if( queueContruct.songs.length == 0 ) {
 
@@ -164,7 +164,7 @@ function stop(message) {
 
 }
 
-async function songInfo(message){
+async function asyncSongInfo(message){
 
     const channel = message.channel;
     const search = message.content.split(/ +/).slice(1).join("%20")
@@ -194,4 +194,4 @@ async function songInfo(message){
     };
 }
 
-module.exports = { execute, skip, stop }
+module.exports = { asyncExecute, skip, stop }

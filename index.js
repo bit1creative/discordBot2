@@ -1,8 +1,8 @@
 const { help } = require("./commands/core/help");
 const { giphy } = require("./commands/giphy");
 const { get_video } = require("./commands/music/youtube");
-const { newMember } = require("./commands/userManagement");
-const { execute, skip, stop } = require("./commands/music/player");
+const { newMember } = require("./commands/userManagement/newMember");
+const { asyncExecute, skip, stop } = require("./commands/music/player");
 
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -47,7 +47,7 @@ client.on('message', async message => {
             get_video(message.channel, split);
             break;
         case "play":
-            execute(message);
+            asyncExecute(message);
             break;
         case "skip":
             skip(message);
