@@ -1,9 +1,9 @@
 const ytdl = require('ytdl-core');
-const { errorHandler } = require("../core/error_handler");
+const { errorHandler } = require("../../core/error_handler");
 const fetch = require("node-fetch");
 const Discord = require('discord.js');
 
-const { yt_api } = require("../../config.json");
+const { yt_api } = require("../../../config.json");
 
 const queueContruct = {
 
@@ -32,7 +32,7 @@ async function asyncExecute(message){
         return message.channel.send("Acess denied. Got no permissions!");        
     }
 
-    let song = await asyncSongInfo(message);
+    let song = await asyncGetSongInfo(message);
 
     if( queueContruct.songs.length == 0 ) {
 
@@ -164,7 +164,7 @@ function stop(message) {
 
 }
 
-async function asyncSongInfo(message){
+async function asyncGetSongInfo(message){
 
     const channel = message.channel;
     const search = message.content.split(/ +/).slice(1).join("%20")

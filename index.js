@@ -1,8 +1,8 @@
 const { help } = require("./commands/core/help");
-const { giphy } = require("./commands/giphy");
-const { get_video } = require("./commands/music/youtube");
+const { giphy } = require("./commands/entertainment/giphy");
+const { get_video } = require("./commands/entertainment/music/youtube");
 const { newMember } = require("./commands/userManagement/newMember");
-const { asyncExecute, skip, stop } = require("./commands/music/player");
+const { asyncExecute, skip, stop } = require("./commands/entertainment/music/player");
 const { setRole } = require("./commands/userManagement/setRole");
 
 const Discord = require('discord.js');

@@ -1,7 +1,7 @@
-const { error } = require("./core/error_handler");
+const { error } = require("../core/error_handler");
 const fetch = require("node-fetch");
 
-const { giphy_api } = require("../config.json");
+const { giphy_api } = require("../../config.json");
 
 function giphy(channel, tag){
     tag = tag.join(" ");

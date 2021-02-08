@@ -1,7 +1,7 @@
-const { error } = require("../core/error_handler");
+const { error } = require("../../core/error_handler");
 const fetch = require("node-fetch");
 
-const {yt_api} = require("../../config.json");
+const {yt_api} = require("../../../config.json");
 
 function get_video(channel, search){
     search = search.join("%20")
