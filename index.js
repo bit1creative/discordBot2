@@ -1,68 +1,73 @@
 const { help } = require("./commands/core/help");
-const { giphy } = require("./commands/entertainment/giphy");
-const { get_video } = require("./commands/entertainment/music/youtube");
+const { giphy } = require("./commands/entertainment/gif/giphy");
+const { getVideo } = require("./commands/entertainment/music/youtube");
 const { newMember } = require("./commands/userManagement/newMember");
-const { asyncExecute, skip, stop } = require("./commands/entertainment/music/player");
+const {
+  asyncExecute,
+  skip,
+  stop,
+} = require("./commands/entertainment/music/player");
 const { setRole } = require("./commands/userManagement/setRole");
+const { sendEmbed } = require("./commands/entertainment/weather/weather");
 
-const Discord = require('discord.js');
+const job = require("./commands/core/vyakbanHandler");
+
+const Discord = require("discord.js");
 const client = new Discord.Client();
 
-const {
-	prefix,
-    token,
-} = require('./config.json');
+const { prefix, token } = require("./config.json");
 
-client.once('ready', () => {                                            
-    client.user.setActivity(prefix + "help", { type: "LISTENING"})                  
-    console.log('Ready!');
-   });
-   client.once('reconnecting', () => {
-    console.log('Reconnecting!');
-   });
-   client.once('disconnect', () => {
-    console.log('Disconnect!');
+client.once("ready", () => {
+  client.user.setActivity(prefix + "help", { type: "LISTENING" });
+  console.log("Ready!");
+});
+client.once("reconnecting", () => {
+  console.log("Reconnecting!");
+});
+client.once("disconnect", () => {
+  console.log("Disconnect!");
 });
 
-
-client.on('guildMemberAdd', member => {
-    newMember(client, member)
+client.on("guildMemberAdd", (member) => {
+  newMember(client, member);
 });
 
+client.on("message", async (message) => {
+  if (!message.content.startsWith(prefix) || message.author.bot) return;
 
-client.on('message', async message => {                                       
-    if(!message.content.startsWith(prefix) || message.author.bot) return; 
-                                                              
-    const split = message.content.slice(prefix.length).trim().split(/ +/);
-    const command = split.shift().toLowerCase();
+  const split = message.content.slice(prefix.length).trim().split(/ +/);
+  const command = split.shift().toLowerCase();
 
-    switch (command) {
-
-        case 'help':
-            help(message.channel, client);
-            break;
-        case "gif":
-            giphy(message.channel, split);
-            break;
-        case "getvid":
-            get_video(message.channel, split);
-            break;
-        case "play":
-            asyncExecute(message);
-            break;
-        case "skip":
-            skip(message);
-            break;
-        case "stop":
-            stop(message);
-            break;
-        case "setrole":
-            setRole(message);
-            break;
-        default:
-            message.channel.send('Wrong command, type pp!help to see available commands.')
-
-    }
-})
+  switch (command) {
+    case "help":
+      help(message.channel, client);
+      break;
+    case "gif":
+      giphy(message.channel, split);
+      break;
+    case "getvid":
+      getVideo(message.channel, split);
+      break;
+    case "play":
+      asyncExecute(message);
+      break;
+    case "skip":
+      skip(message);
+      break;
+    case "stop":
+      stop(message);
+      break;
+    case "setrole":
+      setRole(message);
+      break;
+    case "weather":
+      sendEmbed(message);
+      break;
+    default:
+      message.channel.send(
+        "Wrong command, type pp!help to see available commands."
+      );
+  }
+});
 
 client.login(token);
