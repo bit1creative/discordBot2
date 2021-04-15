@@ -70,7 +70,7 @@ function fillEmbedWithData(embed, dayNum, wForecast) {
   return;
 }
 
-async function sendEmbed(message) {
+async function sendWeatherForecastEmbed(message) {
   const CITY = message.content.replace(prefix + "weather", "");
   if (!CITY) {
     return message.channel.send(
@@ -122,18 +122,21 @@ async function sendEmbed(message) {
         case "⏮":
           if (page == 1) return;
           page--;
-          fillEmbedWithData(embedWeatherForecast, page - 1, daysWeather);
-          embedWeatherForecast.setFooter(`Page ${page} of ${pages.length}`);
-          message.edit(embedWeatherForecast);
+          // fillEmbedWithData(embedWeatherForecast, page - 1, daysWeather);
+          // embedWeatherForecast.setFooter(`Page ${page} of ${pages.length}`);
+          // message.edit(embedWeatherForecast);
           break;
         case "⏭️":
           if (page == pages.length) return;
           page++;
-          fillEmbedWithData(embedWeatherForecast, page - 1, daysWeather);
-          embedWeatherForecast.setFooter(`Page ${page} of ${pages.length}`);
-          message.edit(embedWeatherForecast);
+          // fillEmbedWithData(embedWeatherForecast, page - 1, daysWeather);
+          // embedWeatherForecast.setFooter(`Page ${page} of ${pages.length}`);
+          // message.edit(embedWeatherForecast);
           break;
       }
+      fillEmbedWithData(embedWeatherForecast, page - 1, daysWeather);
+      embedWeatherForecast.setFooter(`Page ${page} of ${pages.length}`);
+      message.edit(embedWeatherForecast);
     });
     collector.on("end", (collected) => {
       return;
@@ -141,4 +144,4 @@ async function sendEmbed(message) {
   });
 }
 
-module.exports = { sendEmbed };
+module.exports = { sendWeatherForecastEmbed };

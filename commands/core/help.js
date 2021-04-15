@@ -23,7 +23,11 @@ function help(channel, client) {
       {
         name: "pp!weather *city*",
         value: "get a 5 days weather forecast for your city",
-      }
+      },
+      { name: "!register", value: "Use to register" },
+      { name: "!random", value: "Use to choose a random user from registered" },
+      { name: "!mystats", value: "View your stats" },
+      { name: "!top", value: "Top 5 most frequently chosen users" }
       // {name: 'pp!command3', value: "what id does"},
     )
     .setTimestamp(new Date())

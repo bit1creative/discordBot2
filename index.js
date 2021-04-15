@@ -2,13 +2,12 @@ const { help } = require("./commands/core/help");
 const { giphy } = require("./commands/entertainment/gif/giphy");
 const { getVideo } = require("./commands/entertainment/music/youtube");
 const { newMember } = require("./commands/userManagement/newMember");
-const {
-  asyncExecute,
-  skip,
-  stop,
-} = require("./commands/entertainment/music/player");
 const { setRole } = require("./commands/userManagement/setRole");
-const { sendEmbed } = require("./commands/entertainment/weather/weather");
+const {
+  sendWeatherForecastEmbed,
+} = require("./commands/entertainment/weather/weather");
+const { DataBase } = require("./commands/database/index");
+const { Player } = require("./commands/entertainment/music/index");
 
 const job = require("./commands/core/vyakbanHandler");
 
@@ -49,19 +48,32 @@ client.on("message", async (message) => {
       getVideo(message.channel, split);
       break;
     case "play":
-      asyncExecute(message);
+      Player.play(message);
       break;
     case "skip":
-      skip(message);
+      Player.skip(message);
       break;
     case "stop":
-      stop(message);
+      Player.stop(message);
       break;
     case "setrole":
       setRole(message);
       break;
     case "weather":
-      sendEmbed(message);
+      sendWeatherForecastEmbed(message);
+      break;
+    case "register":
+      const user = split.slice(0);
+      DataBase.addUser(message, client, user);
+      break;
+    case "random":
+      DataBase.getRandomUser(message, client);
+      break;
+    case "mystats":
+      DataBase.getMyStats(message, client);
+      break;
+    case "top":
+      DataBase.getStats(message, client);
       break;
     default:
       message.channel.send(

@@ -1,9 +1,9 @@
 const ytdl = require("ytdl-core");
 const { errorHandler } = require("../../core/errorHandler");
-const fetch = require("node-fetch");
+const axios = require("axios");
 const Discord = require("discord.js");
 
-const { yt_api } = require("../../../config.json");
+const { ytApi } = require("../../../config.json");
 
 const queueContruct = {
   textChannel: null,
@@ -14,7 +14,7 @@ const queueContruct = {
   playing: false,
 };
 
-async function asyncExecute(message) {
+async function execute(message) {
   const voiceChannel = message.member.voice.channel;
 
   if (!voiceChannel) {
@@ -29,7 +29,7 @@ async function asyncExecute(message) {
     return message.channel.send("Acess denied. Got no permissions!");
   }
 
-  let song = await asyncGetSongInfo(message);
+  let song = await getSongInfo(message);
 
   if (queueContruct.songs.length == 0) {
     queueContruct.textChannel = message.channel;
@@ -135,7 +135,7 @@ function stop(message) {
   }
 }
 
-async function asyncGetSongInfo(message) {
+async function getSongInfo(message) {
   const channel = message.channel;
   const search = message.content.split(/ +/).slice(1).join("%20");
 
@@ -145,29 +145,19 @@ async function asyncGetSongInfo(message) {
   }
 
   try {
-    const request = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${search}&key=${yt_api}`;
-    const response = await fetch(request);
-    if (response.ok) {
-      const data = await response.json();
-      const song = {
-        title: data.items[0].snippet.title,
-        url: `https://www.youtube.com/watch?v=${data.items[0].id.videoId}`,
-        img: data.items[0].snippet.thumbnails.medium.url,
+    const request = `https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q=${search}&key=${ytApi}`;
+    const songInfo = await axios.get(request).then((response) => {
+      return {
+        title: response?.data?.items[0]?.snippet?.title,
+        url: `https://www.youtube.com/watch?v=${response?.data?.items[0]?.id?.videoId}`,
+        img: response?.data?.items[0]?.snippet?.thumbnails?.medium?.url,
       };
-      return song;
-    } else {
-      channel.send(
-        "<@343104810326818820>\nNetwork request for products.json failed with response " +
-          response.status +
-          ": " +
-          response.statusText
-      );
-      return;
-    }
+    });
+    return songInfo;
   } catch (e) {
     errorHandler(channel, e);
     return;
   }
 }
 
-module.exports = { asyncExecute, skip, stop };
+module.exports = { execute, skip, stop };
