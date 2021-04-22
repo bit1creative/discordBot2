@@ -9,7 +9,10 @@ const {
 const { DataBase } = require("./commands/database/index");
 const { Player } = require("./commands/entertainment/music/index");
 
-const job = require("./commands/core/vyakbanHandler");
+const {
+  setVakbyan,
+  vyakBanWatcher,
+} = require("./commands/core/vyakBanHandler");
 
 const Discord = require("discord.js");
 const client = new Discord.Client();
@@ -19,6 +22,7 @@ const { prefix, token } = require("./config.json");
 client.once("ready", () => {
   client.user.setActivity(prefix + "help", { type: "LISTENING" });
   console.log("Ready!");
+  vyakBanWatcher(client);
 });
 client.once("reconnecting", () => {
   console.log("Reconnecting!");
@@ -36,6 +40,7 @@ client.on("message", async (message) => {
 
   const split = message.content.slice(prefix.length).trim().split(/ +/);
   const command = split.shift().toLowerCase();
+  const userMention = split.slice(0);
 
   switch (command) {
     case "help":
@@ -63,8 +68,7 @@ client.on("message", async (message) => {
       sendWeatherForecastEmbed(message);
       break;
     case "register":
-      const user = split.slice(0);
-      DataBase.addUser(message, client, user);
+      DataBase.addUser(message, client, userMention);
       break;
     case "random":
       DataBase.getRandomUser(message, client);
@@ -74,6 +78,9 @@ client.on("message", async (message) => {
       break;
     case "top":
       DataBase.getStats(message, client);
+      break;
+    case "vyak":
+      setVakbyan(client, message, userMention);
       break;
     default:
       message.channel.send(
